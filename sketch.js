@@ -9,6 +9,10 @@ const settings = {
 
 const sketch = () => {
 
+  const colorCount = random.rangeFloor(1, 6);
+  console.log(colorCount);
+  const palette = random.shuffle(random.pick(palettes)).slice(0, colorCount);
+
   const createGrid = () => {
     const points = [];
     const count = 25;
@@ -17,6 +21,7 @@ const sketch = () => {
         const u = count <= 1 ? 0.5 : x / (count - 1);
         const v = count <= 1 ? 0.5 : y / (count - 1);
         points.push({
+          color: random.pick(palette),
           radius: Math.abs(0.01 + random.gaussian() * 0.01),
           position: [u, v]
         });
@@ -36,7 +41,8 @@ const sketch = () => {
     points.forEach(data => {
       const {
         position,
-        radius
+        radius,
+        color
       } = data;
 
       const [ u, v ] = position;
@@ -46,7 +52,7 @@ const sketch = () => {
 
       context.beginPath();
       context.arc(x, y, radius * width, 0, Math.PI * 2, false);
-      context.fillStyle = 'lavender';
+      context.fillStyle = color;
       context.fill();
     })
   };
